@@ -799,15 +799,6 @@ class PlayState extends MusicBeatState
 				if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank4', 1300, 900, 1.5, 1.5, ['fg']));
 				foregroundSprites.add(new BGSprite('tank5', 1620, 700, 1.5, 1.5, ['fg']));
 				if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
-
-			case 'gayporn': //test
-				var datest:MP4Sprite = new MP4Sprite();
-				datest.playVideo(Paths.video('videomenu'));
-				datest.scrollFactor.set(1, 1);
-				datest.scale.set(2, 2);
-				datest.updateHitbox();
-				datest.antialiasing = ClientPrefs.globalAntialiasing;
-				add(datest);
 		}
 
 		switch(Paths.formatToSongPath(SONG.song))
@@ -1315,11 +1306,13 @@ class PlayState extends MusicBeatState
 					tankIntro();
 				
 				case 'bopeebo':
-					startVideo('testbopeebo');
+					playCutscene('testbopeebo');
+                    
 				case 'milk':
-					startVideo('testmilk');
+					playCutscene('testmilk');
+                    
 				case 'ugh':
-					startVideo('testugh');
+					playCutscene('testugh');
 
 				default:
 					startCountdown();
@@ -1535,6 +1528,30 @@ class PlayState extends MusicBeatState
 		else
 			startCountdown();
 	}
+    
+    function playCutscene(name:String, atEndOfSong:Bool = false)
+    {
+        inCutscene = true;
+        FlxG.sound.music.stop();
+
+        var video:VideoHandler = new VideoHandler();
+        video.finishCallback = function()
+        {
+            if (atEndOfSong)
+            {
+                if (storyPlaylist.length <= 0)
+                    FlxG.switchState(new StoryMenuState());
+                else
+                {
+                    SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+                    FlxG.switchState(new PlayState());
+                }
+            }
+            else
+                startCountdown();
+        }
+        video.playVideo(Paths.video(name));
+    }
 
 	var dialogueCount:Int = 0;
 	public var psychDialogue:DialogueBoxPsych;
