@@ -3,10 +3,6 @@ package;
 #if desktop
 import Discord.DiscordClient;
 #end
-#if VIDEOS_ALLOWED
-import vlc.MP4Handler;
-import vlc.MP4Sprite;
-#end
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -100,14 +96,6 @@ class MainMenuState extends MusicBeatState
 		magenta.antialiasing = ClientPrefs.globalAntialiasing;
 		magenta.color = 0xFFfd719b;
 		add(magenta);
-
-		var video:MP4Sprite = new MP4Sprite();
-		video.playVideo(Paths.video('succ'));
-		video.updateHitbox();
-		video.antialiasing = ClientPrefs.globalAntialiasing;
-
-		FlxG.sound.music.stop();
-		add(video);
 		
 		// magenta.scrollFactor.set();
 
