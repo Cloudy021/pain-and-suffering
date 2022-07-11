@@ -192,11 +192,6 @@ class Paths
  
     inline static public function video(key:String)
     {
-        #if MODS_ALLOWED
-        var file:String = modsVideo(key);
-        if(FileSystem.exists(file)) {
-            return file;
-        }
         return 'assets/videos/$key';
     }
 
